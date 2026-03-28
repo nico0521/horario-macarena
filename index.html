@@ -499,7 +499,7 @@ function updateDashboard(){
     const d=toMins(...c.end)<=mins,n=toMins(...c.start)<=mins&&toMins(...c.end)>mins;
     return`<div class="dp-dot ${n?'current':d?'done':'pending'}" style="${n||d?'background:'+RAMOS[c.ramo].color:''}" title="${RAMOS[c.ramo].name}"></div>`;
   }).join('');
-  renderDayList(isWeekday?dow:1,document.getElementById('today-list'));
+  renderDayList(dow,document.getElementById('today-list'));
 }
 
 function renderDayList(dow,container){
