@@ -241,8 +241,6 @@ body{font-family:var(--f);background:var(--bg);color:var(--tx);font-size:15px;li
   </div>
 
   <div class="scroll">
-    <button class="test-btn" onclick="testNotification()" style="width:100%;background:#FF6B6B;color:#fff;border:none;border-radius:var(--r);padding:12px 16px;font-family:var(--f);font-size:14px;font-weight:600;cursor:pointer;margin:16px 0 12px;transition:all .2s;box-shadow:0 4px 12px rgba(255,107,107,.3)">🧪 TEST: Enviar Notificación de Prueba</button>
-
     <!-- DASHBOARD -->
     <div id="view-dashboard" class="view active">
       <div class="dash-grid">
@@ -433,7 +431,7 @@ const DAY_NAMES=['','Lunes','Martes','Miércoles','Jueves','Viernes'];
 const DAY_SHORT=['','LU','MA','MI','JU','VI'];
 let NOTES = JSON.parse(localStorage.getItem('maca-notes')||'{}');
 let currentNoteKey = '';
-let currentDay = Math.min(Math.max(new Date().getDay(),1),5);
+let currentDay = 1;
 
 const toMins=(h,m)=>h*60+m;
 const fmtTime=(h,m)=>`${h}:${String(m).padStart(2,'0')}`;
@@ -443,22 +441,35 @@ const noteKey=(dow,si)=>`${dow}-${si}`;
 
 function findNext(fromDow,fromMins){
   for(let o=0;o<7;o++){
-    const d=((fromDow-1+o)%5)+1;
-    if(d<1||d>5)continue;
-    const sorted=[...(SCHEDULE[d]||[])].sort((a,b)=>toMins(...a.start)-toMins(...b.start));
-    for(const c of sorted){
-      const sm=toMins(...c.start);
-      if(o===0&&sm<=fromMins)continue;
-      const diff=o===0?sm-fromMins:(24*60-fromMins)+(o-1)*24*60+sm;
-      return{...c,diffMins:diff,dow:d};
+    for(let d=1;d<=5;d++){
+      const sm=toMins(...(SCHEDULE[d]||[])[0]?.start||[23,59]);
+      if(o===0&&d<fromDow)continue;
+      if(o===0&&d===fromDow){
+        const cls=[...(SCHEDULE[d]||[])].sort((a,b)=>toMins(...a.start)-toMins(...b.start));
+        for(const c of cls){
+          const st=toMins(...c.start);
+          if(st>fromMins){return{...c,diffMins:st-fromMins,dow:d};}
+        }
+      }else if(o>0||(o===0&&d>fromDow)){
+        const cls=[...(SCHEDULE[d]||[])].sort((a,b)=>toMins(...a.start)-toMins(...b.start));
+        const first=cls[0];
+        if(first){
+          const st=toMins(...first.start);
+          const diff=(24*60-fromMins)+o*24*60+st;
+          return{...first,diffMins:diff,dow:d};
+        }
+      }
     }
-  }return null;
+  }
+  return null;
 }
 
 function updateDashboard(){
   const{dow,mins}=getNow();
-  const today=(SCHEDULE[dow]||[]).sort((a,b)=>toMins(...a.start)-toMins(...b.start));
-  const next=findNext(dow,mins);
+  const isWeekday=dow>=1&&dow<=5;
+  const today=isWeekday?(SCHEDULE[dow]||[]).sort((a,b)=>toMins(...a.start)-toMins(...b.start)):[];
+  const next=isWeekday?findNext(dow,mins):null;
+  
   if(next){
     document.getElementById('dash-cd').textContent=fmtCD(next.diffMins);
     document.getElementById('dash-cd-sub').textContent=next.dow===dow?'hoy':DAY_NAMES[next.dow];
@@ -468,17 +479,18 @@ function updateDashboard(){
     document.getElementById('next-card').style.background=RAMOS[next.ramo].color;
   }else{
     document.getElementById('dash-cd').textContent='—';
-    document.getElementById('dash-cd-sub').textContent='Sin más clases';
+    document.getElementById('dash-cd-sub').textContent=isWeekday?'Sin más clases':'Sin clases';
     document.getElementById('nc-name').textContent='Sin clases próximas';
     document.getElementById('nc-meta').textContent='Disfruta el descanso ✨';
     document.getElementById('nc-cd').textContent='—';
   }
+  
   const done=today.filter(c=>toMins(...c.end)<=mins);
   const rem=today.filter(c=>toMins(...c.end)>mins);
   const inProg=today.filter(c=>toMins(...c.start)<=mins&&toMins(...c.end)>mins);
   document.getElementById('dash-rem').textContent=rem.length;
   document.getElementById('dash-rem-sub').textContent=done.length?`${done.length} ya pasaron`:'por venir';
-  document.getElementById('today-badge').textContent=today.length?`${DAY_NAMES[dow]} · ${today.length} clases`:DAY_NAMES[dow]||'hoy';
+  document.getElementById('today-badge').textContent=isWeekday&&today.length?`${DAY_NAMES[dow]} · ${today.length} clases`:DAY_NAMES[dow]||'hoy';
   const pct=today.length?Math.round(done.length/today.length*100):0;
   document.getElementById('dp-fill').style.width=pct+'%';
   document.getElementById('dp-c').textContent=today.length?`${done.length}/${today.length}`:'Sin clases';
@@ -487,7 +499,7 @@ function updateDashboard(){
     const d=toMins(...c.end)<=mins,n=toMins(...c.start)<=mins&&toMins(...c.end)>mins;
     return`<div class="dp-dot ${n?'current':d?'done':'pending'}" style="${n||d?'background:'+RAMOS[c.ramo].color:''}" title="${RAMOS[c.ramo].name}"></div>`;
   }).join('');
-  renderDayList(dow,document.getElementById('today-list'));
+  renderDayList(isWeekday?dow:1,document.getElementById('today-list'));
 }
 
 function renderDayList(dow,container){
@@ -518,6 +530,7 @@ function renderDayList(dow,container){
 
 function buildDayTabs(){
   const{dow}=getNow();
+  const isWeekday=dow>=1&&dow<=5;
   document.getElementById('dtabs').innerHTML=[1,2,3,4,5].map(d=>`
     <div class="dtab ${d===dow?'today':''} ${d===currentDay?'active':''}" id="tab-${d}" onclick="selectDay(${d})">${DAY_SHORT[d]}</div>`).join('');
 }
@@ -686,26 +699,12 @@ function closeOv(id,e){if(!e||e.target===document.getElementById(id))document.ge
 function openSettings(){openOv('settings-ov');}
 function tog(id){document.getElementById(id).classList.toggle('on');}
 
-function testNotification(){
-  if(!('Notification'in window)){alert('Las notificaciones no están disponibles en este navegador');return;}
-  if(Notification.permission==='granted'){
-    new Notification('✅ ¡Notificaciones funcionan!',{body:'Este es un mensaje de prueba de Horario Maca',icon:'/icon-512.png',tag:'test-notification',requireInteraction:false});
-  }else if(Notification.permission!=='denied'){
-    Notification.requestPermission().then(permission=>{
-      if(permission==='granted'){
-        new Notification('✅ ¡Notificaciones habilitadas!',{body:'Ahora recibirás alertas de tus clases',icon:'/icon-512.png'});
-      }
-    });
-  }else{
-    alert('Las notificaciones están deshabilitadas. Habilítalas en los ajustes de tu navegador.');
-  }
-}
-
 // NOTIFICATIONS
 function requestNotifications(){if('Notification'in window&&Notification.permission==='default')Notification.requestPermission();}
 function scheduleNotifications(){
   if(!('Notification'in window)||Notification.permission!=='granted')return;
-  const{dow,mins}=getNow();const next=findNext(dow,mins);
+  const{dow,mins}=getNow();if(dow<1||dow>5)return;
+  const next=findNext(dow,mins);
   if(!next||next.diffMins>16||next.diffMins<1)return;
   const r=RAMOS[next.ramo];
   if(next.diffMins<=6&&next.diffMins>4)new Notification('⏰ Clase en 5 minutos',{body:`${r.name} · ${next.sala}`});
