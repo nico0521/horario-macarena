@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Horario Maca">
+<meta name="theme-color" content="#9B8FE8">
+<meta name="description" content="Horario académico de Macarena Arriagada · Ing. Civil Biomédica 2026">
+<title>Horario · Macarena Arriagada</title>
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="/icon-512.png">
+<script>
+const MANIFEST = {
+  name: "Horario Macarena",
+  short_name: "Horario Maca",
+  description: "Horario académico · Ing. Civil Biomédica 2026",
+  start_url: "/",
+  display: "standalone",
+  background_color: "#fef6f9",
+  theme_color: "#9B8FE8",
+  orientation: "portrait",
+  icons: [
+    { src: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    { src: "/icon-512.png", sizes: "512x512", type: "image/png", purpose: "any maskable" }
+  ]
+};
+const mblob = new Blob([JSON.stringify(MANIFEST)], {type:'application/json'});
+const murl = URL.createObjectURL(mblob);
+const ml = document.createElement('link');
+ml.rel='manifest'; ml.href=murl;
+document.head.appendChild(ml);
+</script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=DM+Serif+Display&display=swap');
+:root {
+  --p50:#EEEDFE;--p100:#CECBF6;--p200:#AFA9EC;--p400:#7F77DD;--p600:#534AB7;--p800:#3C3489;
+  --k50:#FBEAF0;--k100:#F4C0D1;--k200:#ED93B1;--k400:#D4537E;--k800:#72243E;
+  --mv:#b98ab8;--mvl:#F7E8F5;--teal:#1D9E75;--teal50:#E1F5EE;
+  --bg:#fef6f9;--card:#fffbfd;--bd:rgba(212,83,126,.12);--bdm:rgba(127,119,221,.28);
+  --tx:#1a1825;--mu:#6b6580;--r:16px;--rs:10px;--rx:7px;
+  --f:'DM Sans',sans-serif;--fd:'DM Serif Display',serif;
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg:#13111f;--card:#1c1929;--bd:rgba(174,169,236,.12);--bdm:rgba(174,169,236,.25);
+  --tx:#f0eeff;--mu:#9b93c0;--p50:#1e1c38;--k50:#1f1522;
+}}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{font-family:var(--f);background:var(--bg);color:var(--tx);font-size:15px;line-height:1.5;overscroll-behavior:none}
+
+/* LAYOUT */
+.app{display:flex;flex-direction:column;height:100vh;max-width:430px;margin:0 auto}
+.header{padding:52px 20px 16px;flex-shrink:0}
+.header-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.header-name{font-family:var(--fd);font-size:28px;color:var(--tx);line-height:1.1}
+.header-name span{color:var(--p400)}
+.header-sub{font-size:12px;color:var(--mu);margin-top:2px;letter-spacing:.02em}
+.hbtn{width:36px;height:36px;border-radius:50%;border:.5px solid var(--bdm);background:var(--card);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
+.hbtn svg{width:16px;height:16px;stroke:var(--mu);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.hbtns{display:flex;gap:8px}
+.scroll{flex:1;overflow-y:auto;padding:0 20px 100px;-webkit-overflow-scrolling:touch}
+.scroll::-webkit-scrollbar{display:none}
+
+/* DASHBOARD */
+.dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.mc{background:var(--card);border:.5px solid var(--bd);border-radius:var(--r);padding:14px 16px}
+.mc.acc{background:var(--p50);border-color:var(--p100)}
+.mc-label{font-size:10px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--mu);margin-bottom:4px}
+.mc-val{font-size:26px;font-weight:600;color:var(--p800);line-height:1}
+.mc-val.big{font-family:var(--fd);font-size:32px;color:var(--p600)}
+.mc-sub{font-size:11px;color:var(--mu);margin-top:3px}
+.next-card{border-radius:var(--r);padding:16px 18px;color:#fff;position:relative;overflow:hidden;background:var(--p400);transition:background .4s}
+.next-card::before{content:'';position:absolute;right:-20px;top:-20px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.06)}
+.nc-label{font-size:10px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;opacity:.75;margin-bottom:6px}
+.nc-name{font-size:17px;font-weight:600;line-height:1.2;margin-bottom:4px;padding-right:80px}
+.nc-meta{font-size:12px;opacity:.8}
+.nc-time{position:absolute;right:18px;top:50%;transform:translateY(-50%);text-align:right}
+.nc-time .cd{font-family:var(--fd);font-size:28px;line-height:1}
+.nc-time .cdl{font-size:10px;opacity:.7;margin-top:2px}
+.dp{margin-top:10px;background:var(--card);border:.5px solid var(--bd);border-radius:var(--r);padding:14px 16px}
+.dp-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.dp-t{font-size:12px;font-weight:500;color:var(--mu)}
+.dp-c{font-size:12px;font-weight:600;color:var(--p600)}
+.dp-bar{height:6px;background:var(--bd);border-radius:3px;overflow:hidden}
+.dp-fill{height:100%;background:var(--p400);border-radius:3px;transition:width .6s ease}
+.dp-dots{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.dp-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+/* SECTION */
+.sh{display:flex;justify-content:space-between;align-items:center;margin:20px 0 10px}
+.st{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--mu)}
+.sb{font-size:11px;color:var(--p600);background:var(--p50);padding:2px 8px;border-radius:20px;font-weight:500}
+
+/* DAY TABS */
+.dtabs{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;padding-bottom:2px}
+.dtabs::-webkit-scrollbar{display:none}
+.dtab{flex-shrink:0;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;border:.5px solid var(--bdm);color:var(--mu);background:transparent;transition:all .15s}
+.dtab.active{background:var(--p400);color:#fff;border-color:var(--p400)}
+.dtab.today{border-color:var(--p400);color:var(--p600)}
+.dtab.today.active{background:var(--p400);color:#fff}
+
+/* CLASS BLOCKS */
+.clist{display:flex;flex-direction:column;gap:8px}
+.cb{background:var(--card);border:.5px solid var(--bd);border-radius:var(--rs);padding:12px 14px;display:flex;gap:12px;align-items:flex-start;transition:border-color .2s;position:relative;overflow:hidden}
+.cb.is-now{border-color:var(--p400)}
+.cb.is-now::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--p400);border-radius:3px 0 0 3px}
+.cb.is-done{opacity:.45}
+.cb-time{font-size:11px;font-weight:600;color:var(--p600);min-width:44px;line-height:1.4;padding-top:1px;font-variant-numeric:tabular-nums}
+.cb-body{flex:1;min-width:0}
+.cb-name{font-size:14px;font-weight:600;color:var(--tx);line-height:1.2;margin-bottom:3px}
+.cb-prof{font-size:11px;color:var(--mu)}
+.cb-sala{font-size:11px;color:var(--mu);margin-top:2px}
+.cb-row{display:flex;align-items:center;gap:6px;margin-top:6px;flex-wrap:wrap}
+.cb-tag{display:inline-flex;align-items:center;font-size:10px;font-weight:500;padding:2px 7px;border-radius:20px}
+.cb-note-btn{font-size:10px;color:var(--mu);padding:2px 7px;border-radius:20px;border:.5px solid var(--bdm);cursor:pointer;background:transparent;transition:all .15s}
+.cb-note-btn:hover{background:var(--p50);color:var(--p600);border-color:var(--p200)}
+.cb-note-btn.has-note{color:var(--p600);border-color:var(--p200);background:var(--p50)}
+.cb-now-pill{position:absolute;right:12px;top:12px;background:var(--p400);color:#fff;font-size:9px;font-weight:600;padding:2px 7px;border-radius:20px;letter-spacing:.05em}
+.cb-note-text{font-size:11px;color:var(--p800);background:var(--p50);border-radius:6px;padding:6px 8px;margin-top:6px;line-height:1.4;white-space:pre-wrap;border-left:2px solid var(--p200)}
+
+/* RAMO TAGS */
+.c-mat{background:#EEEDFE;color:#3C3489;border-left:2px solid #7F77DD!important;border-radius:0 var(--rx) var(--rx) 0}
+.c-qui{background:#FBEAF0;color:#72243E;border-left:2px solid #D4537E!important;border-radius:0 var(--rx) var(--rx) 0}
+.c-fis{background:#EDE8FB;color:#3C3489;border-left:2px solid #AFA9EC!important;border-radius:0 var(--rx) var(--rx) 0}
+.c-tal{background:#FDF0F8;color:#72247E;border-left:2px solid #ED93B1!important;border-radius:0 var(--rx) var(--rx) 0}
+.c-ant{background:#F7E8F5;color:#5c1e5c;border-left:2px solid #b98ab8!important;border-radius:0 var(--rx) var(--rx) 0}
+.c-bio{background:#F3EFFE;color:#26215C;border-left:2px solid #534AB7!important;border-radius:0 var(--rx) var(--rx) 0}
+
+/* RAMOS VIEW */
+.rg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.rc{background:var(--card);border:.5px solid var(--bd);border-radius:var(--rs);padding:12px}
+.rc-head{display:flex;align-items:center;gap:7px;margin-bottom:6px}
+.rc-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.rc-name{font-size:12px;font-weight:600;color:var(--tx);line-height:1.3}
+.rc-prof{font-size:10px;color:var(--mu);margin-bottom:6px}
+.rc-row{display:flex;justify-content:space-between;font-size:10px;color:var(--mu);margin-top:3px}
+.rc-row span:last-child{font-weight:600;color:var(--p600)}
+.rc-nrc{font-size:10px;color:var(--mv);margin-top:6px}
+.rc-bar-wrap{margin-top:8px}
+.rc-bar-bg{height:4px;background:var(--bd);border-radius:2px;overflow:hidden;margin-top:4px}
+.rc-bar-fill{height:100%;border-radius:2px;transition:width .6s ease}
+
+/* STATS VIEW */
+.stats-section{margin-bottom:20px}
+.stat-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:.5px solid var(--bd)}
+.stat-row:last-child{border-bottom:none}
+.stat-label{flex:1;font-size:13px;color:var(--tx)}
+.stat-val{font-size:13px;font-weight:600;color:var(--p600)}
+.chart-bar-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.chart-bar-label{font-size:11px;color:var(--mu);width:80px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chart-bar-bg{flex:1;height:18px;background:var(--bd);border-radius:4px;overflow:hidden;position:relative}
+.chart-bar-fill{height:100%;border-radius:4px;display:flex;align-items:center;padding-left:6px;transition:width .7s ease}
+.chart-bar-val{font-size:10px;font-weight:600;color:#fff;position:relative;z-index:1}
+.peak-day-card{background:var(--p50);border:.5px solid var(--p100);border-radius:var(--rs);padding:14px 16px;display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.peak-label{font-size:11px;color:var(--mu);margin-bottom:2px}
+.peak-val{font-size:18px;font-weight:600;color:var(--p800)}
+.weekly-grid{display:flex;gap:6px}
+.wg-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+.wg-day{font-size:10px;color:var(--mu);font-weight:500}
+.wg-bar-wrap{flex:1;width:100%;display:flex;flex-direction:column;justify-content:flex-end;height:60px}
+.wg-bar{width:100%;border-radius:3px 3px 0 0;transition:height .5s ease;min-height:2px}
+.wg-num{font-size:10px;font-weight:600;color:var(--p600)}
+
+/* BOTTOM NAV */
+.bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--card);border-top:.5px solid var(--bd);padding:8px 0 24px;display:flex;justify-content:space-around;z-index:100}
+.ni{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:4px 12px}
+.ni svg{width:22px;height:22px;stroke:var(--mu);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;transition:stroke .15s}
+.ni span{font-size:10px;color:var(--mu);font-weight:500;transition:color .15s}
+.ni.active svg{stroke:var(--p400)}
+.ni.active span{color:var(--p400)}
+
+/* VIEWS */
+.view{display:none}.view.active{display:block}
+
+/* MODALS / SHEETS */
+.overlay{position:fixed;inset:0;background:rgba(19,17,31,.6);z-index:200;display:flex;align-items:flex-end;opacity:0;pointer-events:none;transition:opacity .25s}
+.overlay.open{opacity:1;pointer-events:all}
+.sheet{background:var(--bg);border-radius:24px 24px 0 0;width:100%;max-width:430px;margin:0 auto;padding:20px 20px 48px;transform:translateY(100%);transition:transform .3s cubic-bezier(.32,.72,0,1)}
+.overlay.open .sheet{transform:translateY(0)}
+.handle{width:36px;height:4px;background:var(--bdm);border-radius:2px;margin:0 auto 20px}
+.sheet-title{font-size:17px;font-weight:600;color:var(--tx);margin-bottom:16px}
+.set-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:.5px solid var(--bd)}
+.set-row:last-child{border-bottom:none}
+.set-label{font-size:14px;color:var(--tx)}
+.set-sub{font-size:11px;color:var(--mu);margin-top:2px}
+.toggle{width:44px;height:26px;background:var(--bdm);border-radius:13px;position:relative;cursor:pointer;transition:background .2s;flex-shrink:0}
+.toggle.on{background:var(--p400)}
+.toggle::after{content:'';position:absolute;width:20px;height:20px;background:#fff;border-radius:50%;top:3px;left:3px;transition:transform .2s}
+.toggle.on::after{transform:translateX(18px)}
+
+/* NOTE MODAL */
+.note-sheet{max-height:70vh}
+.note-ta{width:100%;border:.5px solid var(--bdm);border-radius:var(--rs);padding:12px;font-family:var(--f);font-size:14px;color:var(--tx);background:var(--card);resize:none;outline:none;margin-bottom:12px;min-height:100px;line-height:1.6}
+.note-ta:focus{border-color:var(--p400)}
+.note-ta::placeholder{color:var(--mu)}
+.btn-row{display:flex;gap:8px}
+.btn{flex:1;padding:10px;border-radius:var(--rs);font-family:var(--f);font-size:14px;font-weight:500;cursor:pointer;border:.5px solid var(--bdm);background:transparent;color:var(--tx);transition:all .15s}
+.btn.primary{background:var(--p400);color:#fff;border-color:var(--p400)}
+.btn:hover{background:var(--p50)}
+.btn.primary:hover{background:var(--p600)}
+
+/* SHARE MODAL */
+.share-preview{background:linear-gradient(135deg,#EEEDFE 0%,#FBEAF0 100%);border-radius:var(--rs);padding:16px;margin-bottom:16px}
+.share-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.share-btn{display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px;background:var(--card);border:.5px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .15s;font-size:12px;font-weight:500;color:var(--tx)}
+.share-btn:hover{background:var(--p50);border-color:var(--p200)}
+.share-btn svg{width:24px;height:24px;stroke:var(--p400);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+
+/* EMPTY */
+.empty{text-align:center;padding:40px 20px;color:var(--mu)}
+.empty-icon{font-size:36px;margin-bottom:8px}
+.empty-text{font-size:14px}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.cb{animation:fadeUp .25s ease both}
+.cb:nth-child(1){animation-delay:.02s}.cb:nth-child(2){animation-delay:.04s}
+.cb:nth-child(3){animation-delay:.06s}.cb:nth-child(4){animation-delay:.08s}
+.cb:nth-child(5){animation-delay:.10s}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="header-top">
+      <div>
+        <div class="header-name">Hola, <span>Maca</span> ✨</div>
+        <div class="header-sub">Ing. Civil Biomédica · 1er Semestre 2026</div>
+      </div>
+      <div class="hbtns">
+        <div class="hbtn" onclick="openShare()" title="Compartir">
+          <svg viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+        </div>
+        <div class="hbtn" onclick="openSettings()" title="Ajustes">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll">
+    <!-- DASHBOARD -->
+    <div id="view-dashboard" class="view active">
+      <div class="dash-grid">
+        <div class="mc acc">
+          <div class="mc-label">Próxima clase en</div>
+          <div class="mc-val big" id="dash-cd">—</div>
+          <div class="mc-sub" id="dash-cd-sub">—</div>
+        </div>
+        <div class="mc">
+          <div class="mc-label">Clases hoy</div>
+          <div class="mc-val" id="dash-rem">—</div>
+          <div class="mc-sub" id="dash-rem-sub">—</div>
+        </div>
+      </div>
+      <div class="next-card" id="next-card">
+        <div class="nc-label">Próxima clase</div>
+        <div class="nc-name" id="nc-name">—</div>
+        <div class="nc-meta" id="nc-meta">—</div>
+        <div class="nc-time"><div class="cd" id="nc-cd">—</div><div class="cdl">faltan</div></div>
+      </div>
+      <div class="dp">
+        <div class="dp-head">
+          <span class="dp-t" id="dp-t">Progreso del día</span>
+          <span class="dp-c" id="dp-c">—</span>
+        </div>
+        <div class="dp-bar"><div class="dp-fill" id="dp-fill" style="width:0%"></div></div>
+        <div class="dp-dots" id="dp-dots"></div>
+      </div>
+      <div class="sh" style="margin-top:20px">
+        <span class="st">Hoy</span>
+        <span class="sb" id="today-badge">—</span>
+      </div>
+      <div class="clist" id="today-list"></div>
+    </div>
+
+    <!-- HORARIO -->
+    <div id="view-horario" class="view">
+      <div class="dtabs" id="dtabs"></div>
+      <div class="clist" id="day-list"></div>
+    </div>
+
+    <!-- RAMOS -->
+    <div id="view-ramos" class="view">
+      <div class="sh"><span class="st">Asignaturas</span><span class="sb">6 ramos</span></div>
+      <div class="rg" id="ramos-grid"></div>
+    </div>
+
+    <!-- STATS -->
+    <div id="view-stats" class="view">
+      <div class="sh"><span class="st">Estadísticas</span><span class="sb">1er Sem 2026</span></div>
+
+      <div style="background:var(--card);border:.5px solid var(--bd);border-radius:var(--r);padding:16px;margin-bottom:12px">
+        <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--mu);margin-bottom:12px">Horas semanales por ramo</div>
+        <div id="chart-horas"></div>
+      </div>
+
+      <div style="background:var(--card);border:.5px solid var(--bd);border-radius:var(--r);padding:16px;margin-bottom:12px">
+        <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--mu);margin-bottom:12px">Carga por día</div>
+        <div class="weekly-grid" id="weekly-chart"></div>
+      </div>
+
+      <div style="background:var(--card);border:.5px solid var(--bd);border-radius:var(--r);padding:16px;margin-bottom:12px">
+        <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--mu);margin-bottom:12px">Resumen semanal</div>
+        <div id="stat-rows"></div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="bnav">
+    <div class="ni active" id="nav-dashboard" onclick="showView('dashboard')">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+      <span>Inicio</span>
+    </div>
+    <div class="ni" id="nav-horario" onclick="showView('horario')">
+      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      <span>Horario</span>
+    </div>
+    <div class="ni" id="nav-ramos" onclick="showView('ramos')">
+      <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+      <span>Ramos</span>
+    </div>
+    <div class="ni" id="nav-stats" onclick="showView('stats')">
+      <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      <span>Stats</span>
+    </div>
+  </nav>
+</div>
+
+<!-- SETTINGS -->
+<div class="overlay" id="settings-ov" onclick="closeOv('settings-ov',event)">
+  <div class="sheet">
+    <div class="handle"></div>
+    <div class="sheet-title">Configuración</div>
+    <div class="set-row"><div><div class="set-label">Alerta 15 min antes</div><div class="set-sub">Notificación previa a cada clase</div></div><div class="toggle on" id="t-15" onclick="tog('t-15')"></div></div>
+    <div class="set-row"><div><div class="set-label">Alerta 5 min antes</div><div class="set-sub">Recordatorio de última hora</div></div><div class="toggle on" id="t-5" onclick="tog('t-5')"></div></div>
+    <div class="set-row"><div><div class="set-label">Resumen matutino</div><div class="set-sub">Notificación a las 7:30am</div></div><div class="toggle on" id="t-morning" onclick="tog('t-morning')"></div></div>
+    <div class="set-row"><div><div class="set-label">Aviso nocturno</div><div class="set-sub">La noche anterior con la primera clase</div></div><div class="toggle" id="t-night" onclick="tog('t-night')"></div></div>
+    <div class="set-row"><div><div class="set-label">Alerta cambio de sala</div><div class="set-sub">Avisa si cambias de edificio</div></div><div class="toggle on" id="t-sala" onclick="tog('t-sala')"></div></div>
+  </div>
+</div>
+
+<!-- NOTE MODAL -->
+<div class="overlay" id="note-ov" onclick="closeOv('note-ov',event)">
+  <div class="sheet note-sheet">
+    <div class="handle"></div>
+    <div class="sheet-title" id="note-title">Nota</div>
+    <textarea class="note-ta" id="note-ta" placeholder="Apunta tarea, material a llevar, lo que quieras..."></textarea>
+    <div class="btn-row">
+      <button class="btn" onclick="closeOv('note-ov')">Cancelar</button>
+      <button class="btn primary" onclick="saveNote()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- SHARE MODAL -->
+<div class="overlay" id="share-ov" onclick="closeOv('share-ov',event)">
+  <div class="sheet">
+    <div class="handle"></div>
+    <div class="sheet-title">Compartir horario</div>
+    <div class="share-preview" id="share-preview">
+      <div style="font-family:var(--fd);font-size:18px;color:#3C3489;margin-bottom:4px">Macarena Arriagada</div>
+      <div style="font-size:11px;color:#534AB7;margin-bottom:12px">Ing. Civil Biomédica · 1er Sem 2026</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap" id="share-mini"></div>
+    </div>
+    <div class="share-actions">
+      <div class="share-btn" onclick="exportICS()">
+        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="14" x2="8" y2="18"/><line x1="12" y1="14" x2="12" y2="18"/></svg>
+        Google Calendar
+      </div>
+      <div class="share-btn" onclick="copyLink()">
+        <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+        Copiar enlace
+      </div>
+      <div class="share-btn" onclick="downloadHTML()">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Descargar HTML
+      </div>
+      <div class="share-btn" onclick="shareNative()">
+        <svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        Compartir
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const RAMOS = {
+  mat:{name:'Matemática',color:'#7F77DD',prof:'Marcela Rojas Carvajal',nrc:'21597'},
+  qui:{name:'Química General',color:'#D4537E',prof:'Alejandra Tapia Castillo',nrc:'23752 / 24095'},
+  fis:{name:'Intro a la Física',color:'#AFA9EC',prof:'Diego Teca Wellmann',nrc:'21596 / 21599'},
+  tal:{name:'Taller Pens. Comuni. Arte',color:'#ED93B1',prof:'Pedro Salas Camus',nrc:'11132'},
+  ant:{name:'Antropología (FT)',color:'#b98ab8',prof:'Pablo Maillet Aranguiz',nrc:'23941'},
+  bio:{name:'Intro Ing. Biomédica',color:'#534AB7',prof:'Juan Ignacio Spinetto',nrc:'21595'},
+};
+
+const SCHEDULE = {
+  1:[
+    {start:[11,10],end:[12,25],ramo:'fis',sala:'B404, Piso 4 Amberes Sur'},
+    {start:[12,30],end:[13,45],ramo:'fis',sala:'B404, Piso 4 Amberes Sur'},
+    {start:[15,10],end:[16,25],ramo:'bio',sala:'P208, Piso 2 Post Grado'},
+    {start:[16,30],end:[17,45],ramo:'bio',sala:'P208, Piso 2 Post Grado'},
+  ],
+  2:[
+    {start:[8,30],end:[9,45],ramo:'mat',sala:'A706, Piso 7 Amberes Norte'},
+    {start:[13,50],end:[15,5],ramo:'mat',sala:'P208, Piso 2 Post Grado'},
+    {start:[15,10],end:[16,25],ramo:'mat',sala:'P305, Piso 3 Post Grado',note:'Reserva'},
+  ],
+  3:[
+    {start:[8,30],end:[9,45],ramo:'qui',sala:'B204, Piso 2 Amberes Sur'},
+    {start:[9,50],end:[11,5],ramo:'qui',sala:'B204, Piso 2 Amberes Sur'},
+    {start:[12,30],end:[13,45],ramo:'mat',sala:'B301, Piso 3 Amberes Sur'},
+    {start:[13,50],end:[15,5],ramo:'tal',sala:'P308, Piso 3 Post Grado'},
+    {start:[15,10],end:[16,25],ramo:'tal',sala:'P308, Piso 3 Post Grado'},
+  ],
+  4:[
+    {start:[11,10],end:[12,25],ramo:'fis',sala:'Por confirmar'},
+    {start:[12,30],end:[13,45],ramo:'fis',sala:'Por confirmar',note:'(R)'},
+  ],
+  5:[
+    {start:[8,30],end:[9,45],ramo:'qui',sala:'Por confirmar'},
+    {start:[9,50],end:[11,5],ramo:'qui',sala:'Por confirmar',note:'(R)'},
+    {start:[15,10],end:[16,25],ramo:'ant',sala:'B405, Piso 4 Amberes Sur'},
+    {start:[16,30],end:[17,45],ramo:'ant',sala:'B405, Piso 4 Amberes Sur'},
+  ],
+};
+
+const DAY_NAMES=['','Lunes','Martes','Miércoles','Jueves','Viernes'];
+const DAY_SHORT=['','LU','MA','MI','JU','VI'];
+let NOTES = JSON.parse(localStorage.getItem('maca-notes')||'{}');
+let currentNoteKey = '';
+let currentDay = Math.min(Math.max(new Date().getDay(),1),5);
+
+const toMins=(h,m)=>h*60+m;
+const fmtTime=(h,m)=>`${h}:${String(m).padStart(2,'0')}`;
+const fmtCD=mins=>{if(mins<=0)return'ahora';if(mins<60)return`${mins}m`;const h=Math.floor(mins/60),m=mins%60;return m?`${h}h ${m}m`:`${h}h`};
+const getNow=()=>{const n=new Date();return{dow:n.getDay(),h:n.getHours(),m:n.getMinutes(),mins:n.getHours()*60+n.getMinutes()}};
+const noteKey=(dow,si)=>`${dow}-${si}`;
+
+function findNext(fromDow,fromMins){
+  for(let o=0;o<7;o++){
+    const d=((fromDow-1+o)%5)+1;
+    if(d<1||d>5)continue;
+    const sorted=[...(SCHEDULE[d]||[])].sort((a,b)=>toMins(...a.start)-toMins(...b.start));
+    for(const c of sorted){
+      const sm=toMins(...c.start);
+      if(o===0&&sm<=fromMins)continue;
+      const diff=o===0?sm-fromMins:(24*60-fromMins)+(o-1)*24*60+sm;
+      return{...c,diffMins:diff,dow:d};
+    }
+  }return null;
+}
+
+function updateDashboard(){
+  const{dow,mins}=getNow();
+  const today=(SCHEDULE[dow]||[]).sort((a,b)=>toMins(...a.start)-toMins(...b.start));
+  const next=findNext(dow,mins);
+  if(next){
+    document.getElementById('dash-cd').textContent=fmtCD(next.diffMins);
+    document.getElementById('dash-cd-sub').textContent=next.dow===dow?'hoy':DAY_NAMES[next.dow];
+    document.getElementById('nc-name').textContent=RAMOS[next.ramo].name+(next.note?' '+next.note:'');
+    document.getElementById('nc-meta').textContent=`${fmtTime(...next.start)} · ${next.sala}`;
+    document.getElementById('nc-cd').textContent=fmtCD(next.diffMins);
+    document.getElementById('next-card').style.background=RAMOS[next.ramo].color;
+  }else{
+    document.getElementById('dash-cd').textContent='—';
+    document.getElementById('dash-cd-sub').textContent='Sin más clases';
+    document.getElementById('nc-name').textContent='Sin clases próximas';
+    document.getElementById('nc-meta').textContent='Disfruta el descanso ✨';
+    document.getElementById('nc-cd').textContent='—';
+  }
+  const done=today.filter(c=>toMins(...c.end)<=mins);
+  const rem=today.filter(c=>toMins(...c.end)>mins);
+  const inProg=today.filter(c=>toMins(...c.start)<=mins&&toMins(...c.end)>mins);
+  document.getElementById('dash-rem').textContent=rem.length;
+  document.getElementById('dash-rem-sub').textContent=done.length?`${done.length} ya pasaron`:'por venir';
+  document.getElementById('today-badge').textContent=today.length?`${DAY_NAMES[dow]} · ${today.length} clases`:DAY_NAMES[dow]||'hoy';
+  const pct=today.length?Math.round(done.length/today.length*100):0;
+  document.getElementById('dp-fill').style.width=pct+'%';
+  document.getElementById('dp-c').textContent=today.length?`${done.length}/${today.length}`:'Sin clases';
+  document.getElementById('dp-t').textContent=inProg.length?'En clase ahora':'Progreso del día';
+  document.getElementById('dp-dots').innerHTML=today.map(c=>{
+    const d=toMins(...c.end)<=mins,n=toMins(...c.start)<=mins&&toMins(...c.end)>mins;
+    return`<div class="dp-dot ${n?'current':d?'done':'pending'}" style="${n||d?'background:'+RAMOS[c.ramo].color:''}" title="${RAMOS[c.ramo].name}"></div>`;
+  }).join('');
+  renderDayList(dow,document.getElementById('today-list'));
+}
+
+function renderDayList(dow,container){
+  const{mins}=getNow();
+  const classes=(SCHEDULE[dow]||[]).sort((a,b)=>toMins(...a.start)-toMins(...b.start));
+  if(!classes.length){container.innerHTML=`<div class="empty"><div class="empty-icon">🌿</div><div class="empty-text">Sin clases este día</div></div>`;return;}
+  container.innerHTML=classes.map((c,i)=>{
+    const r=RAMOS[c.ramo];
+    const done=toMins(...c.end)<=mins,now=toMins(...c.start)<=mins&&toMins(...c.end)>mins;
+    const nk=noteKey(dow,i);
+    const note=NOTES[nk]||'';
+    return`<div class="cb ${now?'is-now':''} ${done?'is-done':''}" style="animation-delay:${i*.04}s">
+      ${now?'<div class="cb-now-pill">En curso</div>':''}
+      <div class="cb-time">${fmtTime(...c.start)}<br>${fmtTime(...c.end)}</div>
+      <div class="cb-body">
+        <div class="cb-name">${r.name}${c.note?` <span style="font-weight:400;color:var(--mu)">${c.note}</span>`:''}</div>
+        <div class="cb-prof">${r.prof}</div>
+        <div class="cb-sala">📍 ${c.sala}</div>
+        <div class="cb-row">
+          <span class="cb-tag c-${c.ramo}">${r.name.split(' ')[0]}</span>
+          <button class="cb-note-btn ${note?'has-note':''}" onclick="openNote(${dow},${i},'${r.name}')">${note?'📝 Nota':'+ Nota'}</button>
+        </div>
+        ${note?`<div class="cb-note-text">${note}</div>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function buildDayTabs(){
+  const{dow}=getNow();
+  document.getElementById('dtabs').innerHTML=[1,2,3,4,5].map(d=>`
+    <div class="dtab ${d===dow?'today':''} ${d===currentDay?'active':''}" id="tab-${d}" onclick="selectDay(${d})">${DAY_SHORT[d]}</div>`).join('');
+}
+
+function selectDay(d){
+  currentDay=d;
+  document.querySelectorAll('.dtab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+d)?.classList.add('active');
+  renderDayList(d,document.getElementById('day-list'));
+}
+
+function buildRamos(){
+  const dc={};
+  Object.entries(SCHEDULE).forEach(([dow,cls])=>cls.forEach(c=>{
+    if(!dc[c.ramo])dc[c.ramo]={days:new Set(),blocks:0};
+    dc[c.ramo].days.add(Number(dow));dc[c.ramo].blocks++;
+  }));
+  const maxBlocks=Math.max(...Object.values(dc).map(v=>v.blocks));
+  document.getElementById('ramos-grid').innerHTML=Object.entries(RAMOS).map(([k,r])=>{
+    const inf=dc[k]||{days:new Set(),blocks:0};
+    const days=[...inf.days].sort().map(d=>DAY_SHORT[d]).join(' · ');
+    const pct=Math.round(inf.blocks/maxBlocks*100);
+    const hrs=Math.round(inf.blocks*1.25*10)/10;
+    return`<div class="rc">
+      <div class="rc-head"><div class="rc-dot" style="background:${r.color}"></div><div class="rc-name">${r.name}</div></div>
+      <div class="rc-prof">${r.prof}</div>
+      <div class="rc-row"><span>Días</span><span>${days||'—'}</span></div>
+      <div class="rc-row"><span>Bloques/sem.</span><span>${inf.blocks}</span></div>
+      <div class="rc-row"><span>Horas/sem.</span><span>${hrs}h</span></div>
+      <div class="rc-bar-wrap">
+        <div class="rc-bar-bg"><div class="rc-bar-fill" style="width:${pct}%;background:${r.color}"></div></div>
+      </div>
+      <div class="rc-nrc">NRC ${r.nrc}</div>
+    </div>`;
+  }).join('');
+}
+
+function buildStats(){
+  const dc={};
+  Object.entries(SCHEDULE).forEach(([dow,cls])=>cls.forEach(c=>{
+    if(!dc[c.ramo])dc[c.ramo]={blocks:0};dc[c.ramo].blocks++;
+  }));
+  const dayBlocks={1:0,2:0,3:0,4:0,5:0};
+  Object.entries(SCHEDULE).forEach(([dow,cls])=>dayBlocks[Number(dow)]=cls.length);
+  const maxHrs=Math.max(...Object.values(dc).map(v=>v.blocks*1.25));
+  document.getElementById('chart-horas').innerHTML=Object.entries(RAMOS).map(([k,r])=>{
+    const b=(dc[k]||{blocks:0}).blocks;
+    const hrs=Math.round(b*1.25*10)/10;
+    const pct=Math.round(hrs/maxHrs*100);
+    return`<div class="chart-bar-row">
+      <div class="chart-bar-label">${r.name.split(' ')[0]}</div>
+      <div class="chart-bar-bg">
+        <div class="chart-bar-fill" style="width:${pct}%;background:${r.color}">
+          <span class="chart-bar-val">${hrs}h</span>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+  const maxDay=Math.max(...Object.values(dayBlocks));
+  document.getElementById('weekly-chart').innerHTML=[1,2,3,4,5].map(d=>{
+    const b=dayBlocks[d];
+    const pct=maxDay?Math.round(b/maxDay*100):0;
+    const col=b===maxDay?'#D4537E':'#AFA9EC';
+    return`<div class="wg-col">
+      <div class="wg-day">${DAY_SHORT[d]}</div>
+      <div class="wg-bar-wrap"><div class="wg-bar" style="height:${pct}%;background:${col}"></div></div>
+      <div class="wg-num">${b}</div>
+    </div>`;
+  }).join('');
+  const totalBlocks=Object.values(dayBlocks).reduce((a,b)=>a+b,0);
+  const totalHrs=Math.round(totalBlocks*1.25*10)/10;
+  const peakDay=Object.entries(dayBlocks).sort((a,b)=>b[1]-a[1])[0];
+  document.getElementById('stat-rows').innerHTML=`
+    <div class="stat-row"><span class="stat-label">Total horas semanales</span><span class="stat-val">${totalHrs}h</span></div>
+    <div class="stat-row"><span class="stat-label">Total bloques semanales</span><span class="stat-val">${totalBlocks}</span></div>
+    <div class="stat-row"><span class="stat-label">Día más cargado</span><span class="stat-val">${DAY_NAMES[peakDay[0]]} (${peakDay[1]} clases)</span></div>
+    <div class="stat-row"><span class="stat-label">Ramo con más horas</span><span class="stat-val">${RAMOS[Object.entries(dc).sort((a,b)=>b[1].blocks-a[1].blocks)[0][0]].name.split(' ')[0]}</span></div>
+    <div class="stat-row"><span class="stat-label">Días con clases</span><span class="stat-val">5 de 5</span></div>
+  `;
+}
+
+function showView(name){
+  ['dashboard','horario','ramos','stats'].forEach(v=>{
+    document.getElementById('view-'+v).classList.toggle('active',v===name);
+    document.getElementById('nav-'+v).classList.toggle('active',v===name);
+  });
+  if(name==='horario'){buildDayTabs();selectDay(currentDay);}
+  if(name==='ramos')buildRamos();
+  if(name==='stats')buildStats();
+}
+
+// NOTES
+function openNote(dow,si,rname){
+  const nk=noteKey(dow,si);
+  currentNoteKey=nk;
+  document.getElementById('note-title').textContent='Nota · '+rname;
+  document.getElementById('note-ta').value=NOTES[nk]||'';
+  openOv('note-ov');
+  setTimeout(()=>document.getElementById('note-ta').focus(),350);
+}
+function saveNote(){
+  const val=document.getElementById('note-ta').value.trim();
+  if(val)NOTES[currentNoteKey]=val;
+  else delete NOTES[currentNoteKey];
+  localStorage.setItem('maca-notes',JSON.stringify(NOTES));
+  closeOv('note-ov');
+  const{dow}=getNow();
+  const curView=document.querySelector('.view.active')?.id;
+  if(curView==='view-dashboard')renderDayList(dow,document.getElementById('today-list'));
+  if(curView==='view-horario')renderDayList(currentDay,document.getElementById('day-list'));
+}
+
+// SHARE
+function openShare(){
+  const mini=document.getElementById('share-mini');
+  mini.innerHTML=Object.entries(RAMOS).map(([k,r])=>`
+    <div style="background:rgba(255,255,255,.7);border-radius:6px;padding:4px 8px;font-size:10px;font-weight:500;color:#3C3489;display:flex;align-items:center;gap:4px">
+      <div style="width:6px;height:6px;border-radius:50%;background:${r.color}"></div>${r.name.split(' ')[0]}
+    </div>`).join('');
+  openOv('share-ov');
+}
+
+function exportICS(){
+  const lines=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Horario Maca//ES','CALSCALE:GREGORIAN','METHOD:PUBLISH'];
+  const year=2026,semStart=new Date(2026,2,9);
+  const weekdays=[1,2,3,4,5];
+  weekdays.forEach(dow=>{
+    (SCHEDULE[dow]||[]).forEach((c,i)=>{
+      const r=RAMOS[c.ramo];
+      const byday=['','MO','TU','WE','TH','FR'][dow];
+      const uid=`${dow}-${i}-maca-2026@horario`;
+      const dtStart=`${year}0${3}${String(9+dow-1).padStart(2,'0')}T${String(c.start[0]).padStart(2,'0')}${String(c.start[1]).padStart(2,'0')}00`;
+      const dtEnd=`${year}0${3}${String(9+dow-1).padStart(2,'0')}T${String(c.end[0]).padStart(2,'0')}${String(c.end[1]).padStart(2,'0')}00`;
+      const until=`20260710T235959Z`;
+      lines.push('BEGIN:VEVENT',`UID:${uid}`,`DTSTART;TZID=America/Santiago:${dtStart}`,`DTEND;TZID=America/Santiago:${dtEnd}`,`RRULE:FREQ=WEEKLY;BYDAY=${byday};UNTIL=${until}`,`SUMMARY:${r.name}${c.note?' '+c.note:''}`,`DESCRIPTION:Prof: ${r.prof}\\nNRC: ${r.nrc}`,`LOCATION:${c.sala}`,'END:VEVENT');
+    });
+  });
+  lines.push('END:VCALENDAR');
+  const blob=new Blob([lines.join('\r\n')],{type:'text/calendar;charset=utf-8'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='horario-macarena-2026.ics';a.click();
+  closeOv('share-ov');
+}
+
+function downloadHTML(){
+  const blob=new Blob([document.documentElement.outerHTML],{type:'text/html'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='horario-macarena.html';a.click();
+}
+
+function copyLink(){
+  navigator.clipboard.writeText(location.href).then(()=>{
+    const btn=event.target.closest('.share-btn');
+    const orig=btn.lastChild.textContent;btn.lastChild.textContent='¡Copiado!';
+    setTimeout(()=>btn.lastChild.textContent=orig,2000);
+  });
+}
+
+function shareNative(){
+  if(navigator.share){
+    navigator.share({title:'Horario Macarena Arriagada',text:'Ing. Civil Biomédica · 1er Sem 2026',url:location.href});
+  } else copyLink();
+}
+
+// OVERLAYS
+function openOv(id){document.getElementById(id).classList.add('open');}
+function closeOv(id,e){if(!e||e.target===document.getElementById(id))document.getElementById(id).classList.remove('open');}
+function openSettings(){openOv('settings-ov');}
+function tog(id){document.getElementById(id).classList.toggle('on');}
+
+// NOTIFICATIONS
+function requestNotifications(){if('Notification'in window&&Notification.permission==='default')Notification.requestPermission();}
+function scheduleNotifications(){
+  if(!('Notification'in window)||Notification.permission!=='granted')return;
+  const{dow,mins}=getNow();const next=findNext(dow,mins);
+  if(!next||next.diffMins>16||next.diffMins<1)return;
+  const r=RAMOS[next.ramo];
+  if(next.diffMins<=6&&next.diffMins>4)new Notification('⏰ Clase en 5 minutos',{body:`${r.name} · ${next.sala}`});
+  if(next.diffMins<=16&&next.diffMins>14)new Notification('🔔 Clase en 15 minutos',{body:`${r.name} · ${next.sala}`});
+}
+
+// SERVICE WORKER
+if('serviceWorker'in navigator){
+  const sw=`const C='maca-v2';self.addEventListener('install',e=>e.waitUntil(caches.open(C).then(c=>c.addAll(['/']))));self.addEventListener('fetch',e=>e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request))));`;
+  const blob=new Blob([sw],{type:'application/javascript'});
+  navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(()=>{});
+}
+
+// INIT
+updateDashboard();requestNotifications();
+setInterval(()=>{updateDashboard();scheduleNotifications();},30000);
+</script>
+</body>
+</html>
