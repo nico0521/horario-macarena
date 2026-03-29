@@ -219,6 +219,91 @@ body{font-family:var(--f);background:var(--bg);color:var(--tx);font-size:15px;li
 .cb:nth-child(1){animation-delay:.02s}.cb:nth-child(2){animation-delay:.04s}
 .cb:nth-child(3){animation-delay:.06s}.cb:nth-child(4){animation-delay:.08s}
 .cb:nth-child(5){animation-delay:.10s}
+
+/* ── NOTAS VIEW ─────────────────────────────────────────────────────────── */
+.ng-summary{background:linear-gradient(135deg,var(--p50) 0%,var(--k50) 100%);border:.5px solid var(--p100);border-radius:var(--r);padding:16px 18px;margin-bottom:10px;display:flex;align-items:center;gap:16px}
+.ng-ring-wrap{position:relative;flex-shrink:0;width:76px;height:76px}
+.ng-ring{width:76px;height:76px;transform:rotate(-90deg)}
+.ng-ring-track{fill:none;stroke:rgba(127,119,221,.18);stroke-width:5}
+.ng-ring-fill{fill:none;stroke:var(--p400);stroke-width:5;stroke-linecap:round;stroke-dasharray:220;stroke-dashoffset:220;transition:stroke-dashoffset .9s cubic-bezier(.34,1.3,.64,1)}
+.ng-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px}
+.ng-gpa{font-family:var(--fd);font-size:22px;color:var(--p800);line-height:1}
+.ng-gpa-lbl{font-size:8px;color:var(--mu);text-transform:uppercase;letter-spacing:.06em}
+.ng-info{flex:1;min-width:0}
+.ng-title{font-size:15px;font-weight:600;color:var(--tx);margin-bottom:2px}
+.ng-sub{font-size:11px;color:var(--mu);margin-bottom:8px}
+.ng-chips{display:flex;gap:5px;flex-wrap:wrap}
+.ng-chip{font-size:9px;font-weight:600;padding:2px 8px;border-radius:20px;letter-spacing:.03em}
+.ng-chip.pass{background:var(--teal50);color:var(--teal)}
+.ng-chip.risk{background:#FFF7E0;color:#8a6300}
+.ng-chip.fail{background:var(--k50);color:var(--k800)}
+.ng-chip.pend{background:var(--p50);color:var(--p600)}
+
+/* Ramo card */
+.nc-card{background:var(--card);border:.5px solid var(--bd);border-radius:var(--rs);overflow:hidden;margin-bottom:8px}
+.nc-card:nth-child(1){animation:fadeUp .2s ease .03s both}
+.nc-card:nth-child(2){animation:fadeUp .2s ease .06s both}
+.nc-card:nth-child(3){animation:fadeUp .2s ease .09s both}
+.nc-card:nth-child(4){animation:fadeUp .2s ease .12s both}
+.nc-card:nth-child(5){animation:fadeUp .2s ease .15s both}
+.nc-card:nth-child(6){animation:fadeUp .2s ease .18s both}
+.nc-head{display:flex;align-items:center;padding:12px 14px;cursor:pointer;position:relative;gap:10px;transition:background .15s}
+.nc-head:active{background:var(--p50)}
+.nc-accent{width:3px;height:36px;border-radius:2px;flex-shrink:0}
+.nc-head-body{flex:1;min-width:0}
+.nc-head-name{font-size:13px;font-weight:600;color:var(--tx);line-height:1.2}
+.nc-head-prof{font-size:10px;color:var(--mu);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nc-head-right{display:flex;align-items:center;gap:7px;flex-shrink:0}
+.nc-avg{font-family:var(--fd);font-size:24px;line-height:1;min-width:38px;text-align:right}
+.nc-avg.pass{color:var(--teal)}
+.nc-avg.risk{color:#B8860B}
+.nc-avg.fail{color:var(--k400)}
+.nc-avg.none{font-family:var(--f);font-size:14px;color:var(--mu);font-weight:400}
+.nc-pill{font-size:8px;font-weight:600;padding:2px 7px;border-radius:20px;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
+.nc-pill.pass{background:var(--teal50);color:var(--teal)}
+.nc-pill.risk{background:#FFF7E0;color:#8a6300}
+.nc-pill.fail{background:var(--k50);color:var(--k800)}
+.nc-chevron{color:var(--mu);transition:transform .25s;font-size:18px;line-height:1;font-weight:200}
+.nc-chevron.open{transform:rotate(180deg)}
+
+/* Card body (expanded) */
+.nc-body{border-top:.5px solid var(--bd);padding:12px 14px;display:none}
+.nc-body.open{display:block;animation:fadeUp .18s ease both}
+.nc-source-tag{display:inline-flex;align-items:center;gap:4px;font-size:9px;font-weight:500;padding:2px 8px;border-radius:20px;margin-bottom:10px}
+.nc-source-tag.confirmed{background:var(--teal50);color:var(--teal)}
+.nc-source-tag.estimated{background:var(--p50);color:var(--p600)}
+
+/* Evaluation rows */
+.ne-row{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:.5px solid var(--bd)}
+.ne-row:last-of-type{border-bottom:none;padding-bottom:0}
+.ne-left{flex:1;min-width:0}
+.ne-name{font-size:12px;font-weight:500;color:var(--tx)}
+.ne-meta{font-size:9px;color:var(--mu);margin-top:1px}
+.ne-peso{font-size:9px;font-weight:700;color:var(--p600);background:var(--p50);padding:1px 6px;border-radius:10px;flex-shrink:0}
+.ne-input-wrap{position:relative;flex-shrink:0}
+.ne-input{width:54px;height:32px;border:.5px solid var(--bdm);border-radius:var(--rx);text-align:center;font-family:var(--f);font-size:13px;font-weight:600;color:var(--tx);background:var(--card);outline:none;-webkit-appearance:none;appearance:none}
+.ne-input:focus{border-color:var(--p400);box-shadow:0 0 0 3px rgba(127,119,221,.12)}
+.ne-input.v-good{border-color:rgba(29,158,117,.5);background:var(--teal50);color:var(--teal)}
+.ne-input.v-ok{border-color:var(--p200);background:var(--p50);color:var(--p600)}
+.ne-input.v-risk{border-color:rgba(184,134,11,.4);background:#FFF7E0;color:#8a6300}
+.ne-input.v-fail{border-color:rgba(212,83,126,.4);background:var(--k50);color:var(--k800)}
+
+/* Progress & need */
+.nc-prog-wrap{margin-top:12px}
+.nc-prog-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--mu);margin-bottom:4px}
+.nc-prog-labels span:last-child{font-weight:600;color:var(--p600)}
+.nc-prog-track{height:5px;background:var(--bd);border-radius:3px;overflow:hidden}
+.nc-prog-fill{height:100%;border-radius:3px;transition:width .7s ease}
+
+.nc-need{margin-top:10px;padding:9px 12px;border-radius:var(--rx);font-size:11px;line-height:1.6}
+.nc-need.pass{background:var(--teal50);color:#145a42;border:.5px solid rgba(29,158,117,.2)}
+.nc-need.risk{background:#FFF7E0;color:#6b4c00;border:.5px solid rgba(184,134,11,.2)}
+.nc-need.fail{background:var(--k50);color:var(--k800);border:.5px solid var(--k100)}
+.nc-need.pend{background:var(--p50);color:var(--p600);border:.5px solid var(--p100)}
+.nc-need strong{font-weight:700}
+
+/* 5-tab nav adjustment */
+.bnav .ni{padding:4px 8px}
 </style>
 </head>
 <body>
@@ -234,7 +319,7 @@ body{font-family:var(--f);background:var(--bg);color:var(--tx);font-size:15px;li
           <svg viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
         </div>
         <div class="hbtn" onclick="openSettings()" title="Ajustes">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
         </div>
       </div>
     </div>
@@ -307,6 +392,30 @@ body{font-family:var(--f);background:var(--bg);color:var(--tx);font-size:15px;li
         <div id="stat-rows"></div>
       </div>
     </div>
+
+    <!-- NOTAS -->
+    <div id="view-notas" class="view">
+      <div class="sh" style="margin-top:4px"><span class="st">Calificaciones</span><span class="sb">1er Sem 2026</span></div>
+      <div class="ng-summary">
+        <div class="ng-ring-wrap">
+          <svg class="ng-ring" viewBox="0 0 76 76">
+            <circle class="ng-ring-track" cx="38" cy="38" r="32"/>
+            <circle class="ng-ring-fill" id="ng-ring-fill" cx="38" cy="38" r="32"/>
+          </svg>
+          <div class="ng-center">
+            <div class="ng-gpa" id="ng-gpa">—</div>
+            <div class="ng-gpa-lbl">prom.</div>
+          </div>
+        </div>
+        <div class="ng-info">
+          <div class="ng-title">Promedio General</div>
+          <div class="ng-sub" id="ng-sub">Sin notas ingresadas aún</div>
+          <div class="ng-chips" id="ng-chips"></div>
+        </div>
+      </div>
+      <div id="notas-list"></div>
+    </div>
+
   </div>
 
   <nav class="bnav">
@@ -321,6 +430,10 @@ body{font-family:var(--f);background:var(--bg);color:var(--tx);font-size:15px;li
     <div class="ni" id="nav-ramos" onclick="showView('ramos')">
       <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
       <span>Ramos</span>
+    </div>
+    <div class="ni" id="nav-notas" onclick="showView('notas')">
+      <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      <span>Notas</span>
     </div>
     <div class="ni" id="nav-stats" onclick="showView('stats')">
       <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
@@ -431,7 +544,7 @@ const DAY_NAMES=['','Lunes','Martes','Miércoles','Jueves','Viernes'];
 const DAY_SHORT=['','LU','MA','MI','JU','VI'];
 let NOTES = JSON.parse(localStorage.getItem('maca-notes')||'{}');
 let currentNoteKey = '';
-let currentDay = 1;
+let currentDay = Math.min(Math.max(new Date().getDay(),1),5);
 
 const toMins=(h,m)=>h*60+m;
 const fmtTime=(h,m)=>`${h}:${String(m).padStart(2,'0')}`;
@@ -441,35 +554,22 @@ const noteKey=(dow,si)=>`${dow}-${si}`;
 
 function findNext(fromDow,fromMins){
   for(let o=0;o<7;o++){
-    for(let d=1;d<=5;d++){
-      const sm=toMins(...(SCHEDULE[d]||[])[0]?.start||[23,59]);
-      if(o===0&&d<fromDow)continue;
-      if(o===0&&d===fromDow){
-        const cls=[...(SCHEDULE[d]||[])].sort((a,b)=>toMins(...a.start)-toMins(...b.start));
-        for(const c of cls){
-          const st=toMins(...c.start);
-          if(st>fromMins){return{...c,diffMins:st-fromMins,dow:d};}
-        }
-      }else if(o>0||(o===0&&d>fromDow)){
-        const cls=[...(SCHEDULE[d]||[])].sort((a,b)=>toMins(...a.start)-toMins(...b.start));
-        const first=cls[0];
-        if(first){
-          const st=toMins(...first.start);
-          const diff=(24*60-fromMins)+o*24*60+st;
-          return{...first,diffMins:diff,dow:d};
-        }
-      }
+    const d=((fromDow-1+o)%5)+1;
+    if(d<1||d>5)continue;
+    const sorted=[...(SCHEDULE[d]||[])].sort((a,b)=>toMins(...a.start)-toMins(...b.start));
+    for(const c of sorted){
+      const sm=toMins(...c.start);
+      if(o===0&&sm<=fromMins)continue;
+      const diff=o===0?sm-fromMins:(24*60-fromMins)+(o-1)*24*60+sm;
+      return{...c,diffMins:diff,dow:d};
     }
-  }
-  return null;
+  }return null;
 }
 
 function updateDashboard(){
   const{dow,mins}=getNow();
-  const isWeekday=dow>=1&&dow<=5;
-  const today=isWeekday?(SCHEDULE[dow]||[]).sort((a,b)=>toMins(...a.start)-toMins(...b.start)):[];
-  const next=isWeekday?findNext(dow,mins):null;
-  
+  const today=(SCHEDULE[dow]||[]).sort((a,b)=>toMins(...a.start)-toMins(...b.start));
+  const next=findNext(dow,mins);
   if(next){
     document.getElementById('dash-cd').textContent=fmtCD(next.diffMins);
     document.getElementById('dash-cd-sub').textContent=next.dow===dow?'hoy':DAY_NAMES[next.dow];
@@ -479,18 +579,17 @@ function updateDashboard(){
     document.getElementById('next-card').style.background=RAMOS[next.ramo].color;
   }else{
     document.getElementById('dash-cd').textContent='—';
-    document.getElementById('dash-cd-sub').textContent=isWeekday?'Sin más clases':'Sin clases';
+    document.getElementById('dash-cd-sub').textContent='Sin más clases';
     document.getElementById('nc-name').textContent='Sin clases próximas';
     document.getElementById('nc-meta').textContent='Disfruta el descanso ✨';
     document.getElementById('nc-cd').textContent='—';
   }
-  
   const done=today.filter(c=>toMins(...c.end)<=mins);
   const rem=today.filter(c=>toMins(...c.end)>mins);
   const inProg=today.filter(c=>toMins(...c.start)<=mins&&toMins(...c.end)>mins);
   document.getElementById('dash-rem').textContent=rem.length;
   document.getElementById('dash-rem-sub').textContent=done.length?`${done.length} ya pasaron`:'por venir';
-  document.getElementById('today-badge').textContent=isWeekday&&today.length?`${DAY_NAMES[dow]} · ${today.length} clases`:DAY_NAMES[dow]||'hoy';
+  document.getElementById('today-badge').textContent=today.length?`${DAY_NAMES[dow]} · ${today.length} clases`:DAY_NAMES[dow]||'hoy';
   const pct=today.length?Math.round(done.length/today.length*100):0;
   document.getElementById('dp-fill').style.width=pct+'%';
   document.getElementById('dp-c').textContent=today.length?`${done.length}/${today.length}`:'Sin clases';
@@ -530,7 +629,6 @@ function renderDayList(dow,container){
 
 function buildDayTabs(){
   const{dow}=getNow();
-  const isWeekday=dow>=1&&dow<=5;
   document.getElementById('dtabs').innerHTML=[1,2,3,4,5].map(d=>`
     <div class="dtab ${d===dow?'today':''} ${d===currentDay?'active':''}" id="tab-${d}" onclick="selectDay(${d})">${DAY_SHORT[d]}</div>`).join('');
 }
@@ -613,13 +711,311 @@ function buildStats(){
 }
 
 function showView(name){
-  ['dashboard','horario','ramos','stats'].forEach(v=>{
+  ['dashboard','horario','ramos','notas','stats'].forEach(v=>{
     document.getElementById('view-'+v).classList.toggle('active',v===name);
     document.getElementById('nav-'+v).classList.toggle('active',v===name);
   });
   if(name==='horario'){buildDayTabs();selectDay(currentDay);}
   if(name==='ramos')buildRamos();
   if(name==='stats')buildStats();
+  if(name==='notas')buildNotas();
+}
+
+
+// ── NOTAS MODULE ──────────────────────────────────────────────────────────────
+// Estructura de evaluaciones por ramo (basada en datos reales del portal E-Finis)
+const RAMOS_EVALS = {
+  mat:{
+    confirmed:false,
+    evals:[
+      {id:'s1',nombre:'Solemne 1',peso:30,fecha:'Por confirmar'},
+      {id:'s2',nombre:'Solemne 2',peso:30,fecha:'Por confirmar'},
+      {id:'ex',nombre:'Examen Final',peso:40,fecha:'Por confirmar'},
+    ]
+  },
+  fis:{
+    confirmed:false,
+    evals:[
+      {id:'c1',nombre:'Control 1',peso:20,fecha:'30 mar 2026'},
+      {id:'lab1',nombre:'Informe Lab 1',peso:10,fecha:'26 mar 2026'},
+      {id:'s1',nombre:'Solemne 1',peso:30,fecha:'Por confirmar'},
+      {id:'ex',nombre:'Examen Final',peso:40,fecha:'Por confirmar'},
+    ]
+  },
+  qui:{
+    confirmed:false,
+    evals:[
+      {id:'s1',nombre:'Solemne 1',peso:30,fecha:'Por confirmar'},
+      {id:'s2',nombre:'Solemne 2',peso:30,fecha:'Por confirmar'},
+      {id:'ex',nombre:'Examen Final',peso:40,fecha:'Por confirmar'},
+    ]
+  },
+  ant:{
+    confirmed:true,
+    evals:[
+      {id:'sol1',nombre:'Solemne 1',peso:25,fecha:'10 abr 2026'},
+      {id:'c1',nombre:'Control 1',peso:10,fecha:'29 may 2026'},
+      {id:'c2',nombre:'Control 2',peso:10,fecha:'19 jun 2026'},
+      {id:'sol2',nombre:'Solemne 2',peso:25,fecha:'3 jul 2026'},
+      {id:'ex',nombre:'Examen Final',peso:30,fecha:'10 jul 2026'},
+    ]
+  },
+  tal:{
+    confirmed:false,
+    evals:[
+      {id:'ti1',nombre:'Taller Integrador 1',peso:15,fecha:'1 abr 2026'},
+      {id:'ti2',nombre:'Taller Integrador 2',peso:15,fecha:'Por confirmar'},
+      {id:'ti3',nombre:'Taller Integrador 3',peso:15,fecha:'Por confirmar'},
+      {id:'ef',nombre:'Evaluación Final',peso:55,fecha:'Por confirmar'},
+    ]
+  },
+  bio:{
+    confirmed:false,
+    evals:[
+      {id:'s1',nombre:'Solemne 1',peso:30,fecha:'Por confirmar'},
+      {id:'s2',nombre:'Solemne 2',peso:30,fecha:'Por confirmar'},
+      {id:'ex',nombre:'Examen Final',peso:40,fecha:'Por confirmar'},
+    ]
+  },
+};
+
+// Load/save grades from localStorage
+let GRADES = JSON.parse(localStorage.getItem('maca-grades-v1')||'{}');
+// GRADES structure: { 'mat': { 's1': 5.5, 'ex': null, ... }, ... }
+
+function saveGrades(){localStorage.setItem('maca-grades-v1',JSON.stringify(GRADES));}
+
+function getGrade(ramoId,evalId){
+  return (GRADES[ramoId]&&GRADES[ramoId][evalId]!=null)?GRADES[ramoId][evalId]:null;
+}
+
+function setGrade(ramoId,evalId,val){
+  if(!GRADES[ramoId])GRADES[ramoId]={};
+  GRADES[ramoId][evalId]=(val!==null&&val!==''&&!isNaN(val))?parseFloat(val):null;
+  saveGrades();
+}
+
+function calcProm(ramoId){
+  const evs=RAMOS_EVALS[ramoId].evals;
+  let sum=0,totalPeso=0;
+  evs.forEach(e=>{
+    const g=getGrade(ramoId,e.id);
+    if(g!==null){sum+=g*e.peso;totalPeso+=e.peso;}
+  });
+  if(totalPeso===0)return null;
+  // Scale to full 100% if not all grades entered
+  return Math.round((sum/totalPeso)*10)/10;
+}
+
+function calcNeedToPass(ramoId){
+  const evs=RAMOS_EVALS[ramoId].evals;
+  let weightedSumDone=0,pesoFaltante=0;
+  evs.forEach(e=>{
+    const g=getGrade(ramoId,e.id);
+    if(g!==null)weightedSumDone+=g*e.peso;
+    else pesoFaltante+=e.peso;
+  });
+  if(pesoFaltante===0){
+    const avg=calcProm(ramoId);
+    return avg>=4.0?{type:'done_pass',avg}:{type:'done_fail',avg};
+  }
+  // Weighted avg to pass: (sum_done + x*peso_faltante)/100 >= 4.0
+  const x=(4.0*100 - weightedSumDone)/pesoFaltante;
+  if(x<=1)return{type:'any',need:x};
+  if(x>7)return{type:'impossible',need:x};
+  return{type:'need',need:Math.ceil(x*10)/10};
+}
+
+function gradeClass(g){
+  if(g===null)return'';
+  if(g>=5.0)return'v-good';
+  if(g>=4.0)return'v-ok';
+  if(g>=3.5)return'v-risk';
+  return'v-fail';
+}
+
+function statusInfo(avg){
+  if(avg===null)return{cls:'none',pill:'',label:''};
+  if(avg>=5.0)return{cls:'pass',pill:'pass',label:'Aprobando'};
+  if(avg>=4.0)return{cls:'pass',pill:'pass',label:'Aprobando'};
+  if(avg>=3.5)return{cls:'risk',pill:'risk',label:'En riesgo'};
+  return{cls:'fail',pill:'fail',label:'Reprobando'};
+}
+
+function buildNotas(){
+  // GPA
+  const proms=Object.keys(RAMOS).map(k=>calcProm(k)).filter(v=>v!==null);
+  const gpa=proms.length?Math.round(proms.reduce((a,b)=>a+b,0)/proms.length*10)/10:null;
+
+  document.getElementById('ng-gpa').textContent=gpa?gpa.toFixed(1):'—';
+  document.getElementById('ng-sub').textContent=proms.length?`${proms.length} de 6 ramos calificados`:'Sin notas ingresadas aún';
+
+  if(gpa){
+    const pct=Math.max(0,Math.min(1,(gpa-1)/6));
+    const circ=2*Math.PI*32;
+    const offset=circ-(pct*circ);
+    setTimeout(()=>{
+      const el=document.getElementById('ng-ring-fill');
+      el.style.strokeDasharray=circ;
+      el.style.strokeDashoffset=offset;
+      el.style.stroke=gpa>=5?'var(--teal)':gpa>=4?'var(--p400)':'var(--k400)';
+    },80);
+  }
+
+  // Status chips
+  const pass=Object.keys(RAMOS).filter(k=>{const p=calcProm(k);return p!==null&&p>=4.0;}).length;
+  const risk=Object.keys(RAMOS).filter(k=>{const p=calcProm(k);return p!==null&&p<4.0&&p>=3.5;}).length;
+  const fail=Object.keys(RAMOS).filter(k=>{const p=calcProm(k);return p!==null&&p<3.5;}).length;
+  const pend=Object.keys(RAMOS).filter(k=>calcProm(k)===null).length;
+  let chips='';
+  if(pass)chips+=`<span class="ng-chip pass">✓ ${pass} aprobando</span>`;
+  if(risk)chips+=`<span class="ng-chip risk">⚡ ${risk} en riesgo</span>`;
+  if(fail)chips+=`<span class="ng-chip fail">✗ ${fail} reprobando</span>`;
+  if(pend)chips+=`<span class="ng-chip pend">${pend} sin notas</span>`;
+  document.getElementById('ng-chips').innerHTML=chips;
+
+  // Ramo cards
+  document.getElementById('notas-list').innerHTML=Object.entries(RAMOS).map(([k,r])=>{
+    const evData=RAMOS_EVALS[k];
+    const avg=calcProm(k);
+    const si=statusInfo(avg);
+    const need=calcNeedToPass(k);
+    const pct=avg?Math.min(100,Math.round((avg/7)*100)):0;
+
+    // Build need message
+    let needHtml='';
+    if(need.type==='done_pass')needHtml=`<div class="nc-need pass">✓ <strong>${avg.toFixed(1)}</strong> — ¡Ramo aprobado!</div>`;
+    else if(need.type==='done_fail')needHtml=`<div class="nc-need fail">✗ <strong>${avg.toFixed(1)}</strong> — Ramo reprobado.</div>`;
+    else if(need.type==='any')needHtml=`<div class="nc-need pass">✓ Con cualquier nota en lo que resta, apruebas.</div>`;
+    else if(need.type==='impossible')needHtml=`<div class="nc-need fail">✗ Ya no es posible aprobar este ramo con las notas actuales.</div>`;
+    else if(need.type==='need')needHtml=`<div class="nc-need risk">Necesitas al menos <strong>${need.need}</strong> en las evaluaciones pendientes para aprobar.</div>`;
+    else needHtml=`<div class="nc-need pend">Ingresa tus notas para ver qué necesitas para pasar.</div>`;
+
+    const evalRows=evData.evals.map(e=>{
+      const g=getGrade(k,e.id);
+      const gc=gradeClass(g);
+      return`<div class="ne-row">
+        <div class="ne-left">
+          <div class="ne-name">${e.nombre}</div>
+          <div class="ne-meta">${e.fecha} · <span style="color:var(--p600);font-weight:600">${e.peso}%</span></div>
+        </div>
+        <input class="ne-input ${gc}" type="number" min="1" max="7" step="0.1"
+          value="${g!==null?g:''}" placeholder="—"
+          onchange="onGradeChange('${k}','${e.id}',this)"
+          oninput="onGradeChange('${k}','${e.id}',this)"
+          onclick="event.stopPropagation()">
+      </div>`;
+    }).join('');
+
+    return`<div class="nc-card">
+      <div class="nc-head" onclick="toggleNotaCard('nb-${k}',this)">
+        <div class="nc-accent" style="background:${r.color}"></div>
+        <div class="nc-head-body">
+          <div class="nc-head-name">${r.name}</div>
+          <div class="nc-head-prof">${r.prof}</div>
+        </div>
+        <div class="nc-head-right">
+          <div class="nc-avg ${si.cls||'none'}" id="nc-avg-${k}">${avg?avg.toFixed(1):'—'}</div>
+          ${si.pill?`<div class="nc-pill ${si.pill}" id="nc-pill-${k}">${si.label}</div>`:`<div class="nc-pill" id="nc-pill-${k}" style="display:none"></div>`}
+          <div class="nc-chevron" id="nc-chev-${k}">›</div>
+        </div>
+      </div>
+      <div class="nc-body" id="nb-${k}">
+        <div class="nc-source-tag ${evData.confirmed?'confirmed':'estimated'}">
+          ${evData.confirmed?'✓ Ponderaciones confirmadas del portal':'⚙ Estructura estimada · ajustar si el prof indica otro sistema'}
+        </div>
+        ${evalRows}
+        <div class="nc-prog-wrap">
+          <div class="nc-prog-labels"><span>Progreso de nota</span><span id="nc-prog-lbl-${k}">${avg?avg.toFixed(1)+' / 7.0':'Sin notas'}</span></div>
+          <div class="nc-prog-track"><div class="nc-prog-fill" id="nc-prog-${k}" style="width:${pct}%;background:${avg?si.cls==='pass'?'var(--teal)':si.cls==='risk'?'#B8860B':'var(--k400)':'var(--p400)'}"></div></div>
+        </div>
+        <div id="nc-need-${k}">${needHtml}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleNotaCard(bodyId,head){
+  const body=document.getElementById(bodyId);
+  const ramoId=bodyId.replace('nb-','');
+  const chev=document.getElementById('nc-chev-'+ramoId);
+  const isOpen=body.classList.contains('open');
+  // close all others
+  document.querySelectorAll('.nc-body.open').forEach(b=>b.classList.remove('open'));
+  document.querySelectorAll('.nc-chevron.open').forEach(c=>c.classList.remove('open'));
+  if(!isOpen){body.classList.add('open');if(chev)chev.classList.add('open');}
+}
+
+function onGradeChange(ramoId,evalId,input){
+  const raw=input.value.trim();
+  let val=parseFloat(raw);
+  if(raw===''||isNaN(val)){setGrade(ramoId,evalId,null);input.className='ne-input';return;}
+  val=Math.min(7,Math.max(1,val));
+  input.value=val;
+  setGrade(ramoId,evalId,val);
+  input.className='ne-input '+gradeClass(val);
+  refreshRamoCard(ramoId);
+  refreshGPASummary();
+}
+
+function refreshRamoCard(k){
+  const r=RAMOS[k];
+  const avg=calcProm(k);
+  const si=statusInfo(avg);
+  const need=calcNeedToPass(k);
+  const pct=avg?Math.min(100,Math.round((avg/7)*100)):0;
+
+  const avgEl=document.getElementById('nc-avg-'+k);
+  const pillEl=document.getElementById('nc-pill-'+k);
+  const progEl=document.getElementById('nc-prog-'+k);
+  const progLbl=document.getElementById('nc-prog-lbl-'+k);
+  const needEl=document.getElementById('nc-need-'+k);
+
+  if(avgEl){avgEl.textContent=avg?avg.toFixed(1):'—';avgEl.className='nc-avg '+(si.cls||'none');}
+  if(pillEl){
+    if(si.pill){pillEl.textContent=si.label;pillEl.className='nc-pill '+si.pill;pillEl.style.display='';}
+    else{pillEl.style.display='none';}
+  }
+  if(progEl){
+    progEl.style.width=pct+'%';
+    progEl.style.background=avg?(si.cls==='pass'?'var(--teal)':si.cls==='risk'?'#B8860B':'var(--k400)'):'var(--p400)';
+  }
+  if(progLbl)progLbl.textContent=avg?avg.toFixed(1)+' / 7.0':'Sin notas';
+
+  if(needEl){
+    let needHtml='';
+    if(need.type==='done_pass')needHtml=`<div class="nc-need pass">✓ <strong>${avg.toFixed(1)}</strong> — ¡Ramo aprobado!</div>`;
+    else if(need.type==='done_fail')needHtml=`<div class="nc-need fail">✗ <strong>${avg.toFixed(1)}</strong> — Ramo reprobado.</div>`;
+    else if(need.type==='any')needHtml=`<div class="nc-need pass">✓ Con cualquier nota en lo que resta, apruebas.</div>`;
+    else if(need.type==='impossible')needHtml=`<div class="nc-need fail">✗ Ya no es posible aprobar este ramo con las notas actuales.</div>`;
+    else if(need.type==='need')needHtml=`<div class="nc-need risk">Necesitas al menos <strong>${need.need}</strong> en las evaluaciones pendientes para aprobar.</div>`;
+    else needHtml=`<div class="nc-need pend">Ingresa tus notas para ver qué necesitas para pasar.</div>`;
+    needEl.innerHTML=needHtml;
+  }
+}
+
+function refreshGPASummary(){
+  const proms=Object.keys(RAMOS).map(k=>calcProm(k)).filter(v=>v!==null);
+  const gpa=proms.length?Math.round(proms.reduce((a,b)=>a+b,0)/proms.length*10)/10:null;
+  document.getElementById('ng-gpa').textContent=gpa?gpa.toFixed(1):'—';
+  document.getElementById('ng-sub').textContent=proms.length?`${proms.length} de 6 ramos calificados`:'Sin notas ingresadas aún';
+  if(gpa){
+    const pct=Math.max(0,Math.min(1,(gpa-1)/6));
+    const circ=2*Math.PI*32;
+    const el=document.getElementById('ng-ring-fill');
+    el.style.strokeDashoffset=circ-(pct*circ);
+    el.style.stroke=gpa>=5?'var(--teal)':gpa>=4?'var(--p400)':'var(--k400)';
+  }
+  const pass=Object.keys(RAMOS).filter(k=>{const p=calcProm(k);return p!==null&&p>=4.0;}).length;
+  const risk=Object.keys(RAMOS).filter(k=>{const p=calcProm(k);return p!==null&&p<4.0&&p>=3.5;}).length;
+  const fail=Object.keys(RAMOS).filter(k=>{const p=calcProm(k);return p!==null&&p<3.5;}).length;
+  const pend=Object.keys(RAMOS).filter(k=>calcProm(k)===null).length;
+  let chips='';
+  if(pass)chips+=`<span class="ng-chip pass">✓ ${pass} aprobando</span>`;
+  if(risk)chips+=`<span class="ng-chip risk">⚡ ${risk} en riesgo</span>`;
+  if(fail)chips+=`<span class="ng-chip fail">✗ ${fail} reprobando</span>`;
+  if(pend)chips+=`<span class="ng-chip pend">${pend} sin notas</span>`;
+  document.getElementById('ng-chips').innerHTML=chips;
 }
 
 // NOTES
@@ -703,8 +1099,7 @@ function tog(id){document.getElementById(id).classList.toggle('on');}
 function requestNotifications(){if('Notification'in window&&Notification.permission==='default')Notification.requestPermission();}
 function scheduleNotifications(){
   if(!('Notification'in window)||Notification.permission!=='granted')return;
-  const{dow,mins}=getNow();if(dow<1||dow>5)return;
-  const next=findNext(dow,mins);
+  const{dow,mins}=getNow();const next=findNext(dow,mins);
   if(!next||next.diffMins>16||next.diffMins<1)return;
   const r=RAMOS[next.ramo];
   if(next.diffMins<=6&&next.diffMins>4)new Notification('⏰ Clase en 5 minutos',{body:`${r.name} · ${next.sala}`});
